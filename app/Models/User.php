@@ -2,39 +2,62 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+/**
+ * Class User
+ *
+ * @property string name
+ * @property string email
+ * @property string email_verified_at
+ * @property string password
+ * @property string remember_token
+ */
+class User extends Authenticable
 {
     use Notifiable, HasApiTokens;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
+
+    /**
+     * Relationship with the products table
+     *
+     * @return HasMany
+     **/
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /**
+     * Relationship with the stock movements table
+     *
+     * @return HasMany
+     **/
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
 }
