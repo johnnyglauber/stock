@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Repositories\EloquentRepositoryInterface;
 use App\Repositories\DataSourceRepositoryInterface;
 use App\Repositories\Eloquent\DataSourceRepository;
+use App\Repositories\StockMovementTypeRepositoryInterface;
+use App\Repositories\Eloquent\StockMovementTypeRepository;
 use App\Repositories\Eloquent\BaseRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,5 +23,6 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(EloquentRepositoryInterface::class, BaseRepository::class);
         $this->app->bind(DataSourceRepositoryInterface::class, DataSourceRepository::class);
+        $this->app->bind(StockMovementTypeRepositoryInterface::class, StockMovementTypeRepository::class);
     }
 }
