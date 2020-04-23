@@ -48,7 +48,7 @@ class Product extends Model
     public static $createRules = [
         'name' => 'required|max:255',
         'code' => 'required|max:30|unique:products',
-        'description' => 'required|max:1000',
+        'description' => 'max:1000',
         'user_id' => 'required|exists:users,id'
     ];
 
@@ -56,11 +56,11 @@ class Product extends Model
      * Validation rules for updating
      *
      * @var array
+     * @see UpdateProductRequest::rules() for complementary rules
      */
     public static $updateRules = [
         'name' => 'required|max:255',
-        'code' => 'required|max:30|unique:products',
-        'description' => 'required|max:1000'
+        'description' => 'max:1000'
     ];
 
     /**
@@ -81,5 +81,51 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get amount of products placed in stock
+     *
+     * @return float|null
+     **/
+    public function placedAmount()
+    {
+        $fk_placed = config('stock.fk_placed');
+        if ($fk_placed > 0) {
+            $amount = $this->stockMovements()->where('stock_movement_type_id', $fk_placed)->sum('amount');
+            return ($amount > 0) ? $amount : 0;
+        }
+        return 0;
+    }
+
+    /**
+     * Get amount of products removed from stock
+     *
+     * @return float|null
+     **/
+    public function removedAmount()
+    {
+        $fk_removed = config('stock.fk_removed');
+        if ($fk_removed > 0) {
+            $amount = $this->stockMovements()->where('stock_movement_type_id', $fk_removed)->sum('amount');
+            return ($amount > 0) ? $amount : 0;
+        }
+        return 0;
+    }
+
+    /**
+     * Get amount of products available in stock
+     *
+     * @return float
+     **/
+    public function availableAmount()
+    {
+        $placedAmount = $this->placedAmount();
+        $removedAmount = $this->removedAmount();
+        if ($placedAmount >= 0 && $removedAmount >= 0) {
+            return $placedAmount - $removedAmount;
+        } else {
+            return 0;
+        }
     }
 }
