@@ -48,4 +48,25 @@ return [
     |
     */
     'fk_removed' => env('FK_REMOVED', 2),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Number format
+    |--------------------------------------------------------------------------
+    |
+    | Define the method that formats the numbers for displaying in view
+    |
+    */
+    'format_number' => '\App\Http\Helpers\NumberController::formatToBrazilianNotation',
+
+    /*
+    |--------------------------------------------------------------------------
+    | DateTime format
+    |--------------------------------------------------------------------------
+    |
+    | Define the method that formats the datetime strings for displaying in view
+    |
+    */
+    'format_date' => '\App\Http\Helpers\DateController::formatToBrazilianNotation',
+
 ];

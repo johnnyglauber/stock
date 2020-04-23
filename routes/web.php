@@ -24,3 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('data-sources', 'DataSourceController');
 Route::resource('stock-movement-types', 'StockMovementTypeController');
 Route::resource('products', 'ProductController');
+Route::resource('stock-movements', 'StockMovementController');
+Route::get('stock-movements/create/{stockMovementTypeId?}/{productId?}/', 'StockMovementController@create')->name('stock-movements.create');
