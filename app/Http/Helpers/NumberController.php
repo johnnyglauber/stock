@@ -2,6 +2,8 @@
 
 namespace App\Http\Helpers;
 
+use phpDocumentor\Reflection\Types\Mixed_;
+
 /**
  * Class NumberController
  *
@@ -23,14 +25,14 @@ class NumberController
      * Format number to brazilian notation.
      *
      * @param float $number
-     * @return float
+     * @return mixed
      */
-    public static function formatToBrazilianNotation(float $number): float
+    public static function formatToBrazilianNotation(float $number)
     {
         if ($number - floor($number) > 0) {
             return number_format($number, 2, ',', '.');
         } else {
-            return number_format($number, 0, ',', '.');;
+            return number_format($number, 0, ',', '.');
         }
     }
 }
