@@ -60,6 +60,7 @@ class Product extends Model
      */
     public static $updateRules = [
         'name' => 'required|max:255',
+        'code' => 'required|max:30|unique:products',
         'description' => 'max:1000'
     ];
 
@@ -123,7 +124,7 @@ class Product extends Model
         $placedAmount = $this->placedAmount();
         $removedAmount = $this->removedAmount();
         if ($placedAmount >= 0 && $removedAmount >= 0) {
-            return $placedAmount - $removedAmount;
+            return config('stock.format_number')($placedAmount - $removedAmount);
         } else {
             return 0;
         }
