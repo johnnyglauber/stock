@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\Api\CreateStockPlacementApiRequest;
 use App\Http\Requests\UpdateStockMovementRequest;
 use App\Http\Requests\CreateStockMovementRequest;
 use Illuminate\Database\Eloquent\Model;
@@ -48,11 +49,13 @@ class StockMovement extends Model
      *
      * @var array
      * @see CreateStockMovementRequest::rules() for complementary rules
+     * @see CreateStockPlacementApiRequest::rules() for complementary rules
+     * @see CreateStockRemovalApiRequest::rules() for complementary rules
      */
     public static $createRules = [
         'stock_movement_type_id' => 'required|exists:stock_movement_types,id',
         'product_id' => 'required|exists:products,id',
-        'amount' => 'required|numeric|gt:0',
+        'amount' => 'required|numeric|gt:0|max:999999.99',
         'user_id' => 'required|exists:users,id',
         'data_source_id' => 'required|exists:data_sources,id'
     ];
@@ -66,7 +69,7 @@ class StockMovement extends Model
     public static $updateRules = [
         'stock_movement_type_id' => 'required|exists:stock_movement_types,id',
         'product_id' => 'required|exists:products,id',
-        'amount' => 'required|numeric|gt:0',
+        'amount' => 'required|numeric|gt:0|max:999999.99',
     ];
 
     /**
@@ -88,6 +91,7 @@ class StockMovement extends Model
      */
     public function getAmountAttribute($value)
     {
+        //return $value;
         return config('stock.format_number')($value);
     }
 
